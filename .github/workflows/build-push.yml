@@ -10,13 +10,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - run: working-directory: ./frontend
-      - run: docker build -t goal-reminder-frontend:test .
-      
+      - name: Build frontend
+        working-directory: ./frontend
+        run: docker build -t goal-reminder-frontend:test .
+        
   build-backend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - run: working-directory: ./backend
-      - run:docker build -t goal-reminder-backend:test .
+      - name: Build backend
+        working-directory: ./backend
+        run: docker build -t goal-reminder-backend:test .
