@@ -1,0 +1,53 @@
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+
+    depends_on:
+      - backend
+
+    networks:
+      - my-custom-network
+
+  backend:
+    build: ./backend
+
+    ports:
+      - "5001:5000"
+
+    environment:
+      NODE_ENV: production
+      MONGO_URI: mongodb://admin:password@database:27017/mydb?authSource=admin
+      JWT_SECRET: abc123
+
+    depends_on:
+      - database
+
+    networks:
+      - my-custom-network
+
+  database:
+    image: mongo:8
+
+    restart: always
+
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+
+    ports:
+      - "27017:27017"
+
+    volumes:
+      - mongodata:/data/db
+
+    networks:
+      - my-custom-network
+
+volumes:
+  mongodata:
+
+networks:
+  my-custom-network:
+    driver: bridge
