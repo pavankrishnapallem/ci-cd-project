@@ -37,9 +37,9 @@ jobs:
       - name: build and push frontend image
         working-directory: ./frontend
         run: docker build -t goal-reminder-frontend:${{ github.ref_name }} .
-        run: docker push goal-reminder-frontend:${{ github.ref_name }}
+      - run: docker push goal-reminder-frontend:${{ github.ref_name }}
       - name: build and push backend image
         working-directory: ./backend
         run: docker build -t goal-reminder-backend:${{ github.ref_name }} .
-        run: docker push goal-reminder-backend:${{ github.ref_name }}
+      - run: docker push goal-reminder-backend:${{ github.ref_name }}
 
