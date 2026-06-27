@@ -14,8 +14,7 @@ export const createGoal = createAsyncThunk(
   'goals/create',
   async (goalData, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token
-      return await goalService.createGoal(goalData, token)
+      return await goalService.createGoal(goalData)
     } catch (error) {
       const message =
         (error.response &&
@@ -33,8 +32,7 @@ export const getGoals = createAsyncThunk(
   'goals/getAll',
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token
-      return await goalService.getGoals(token)
+      return await goalService.getGoals()
     } catch (error) {
       const message =
         (error.response &&
@@ -52,8 +50,7 @@ export const updateGoal = createAsyncThunk(
   'goals/update',
   async ({ id, goalData }, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token
-      return await goalService.updateGoal(id, goalData, token)
+      return await goalService.updateGoal(id, goalData)
     } catch (error) {
       const message =
         (error.response &&
@@ -71,8 +68,7 @@ export const deleteGoal = createAsyncThunk(
   'goals/delete',
   async (id, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token
-      return await goalService.deleteGoal(id, token)
+      return await goalService.deleteGoal(id)
     } catch (error) {
       const message =
         (error.response &&

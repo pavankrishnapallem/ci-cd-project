@@ -12,6 +12,19 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use((req, res, next) => {
+  const cookieHeader = req.headers.cookie;
+
+  req.cookies = cookieHeader
+    ? cookieHeader.split(';').reduce((cookies, cookie) => {
+        const [key, ...value] = cookie.trim().split('=');
+        cookies[key] = decodeURIComponent(value.join('='));
+        return cookies;
+      }, {})
+    : {};
+
+  next();
+});
 
 app.use('/api/goals', require('./routes/goalRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));

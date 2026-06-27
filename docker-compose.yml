@@ -20,6 +20,8 @@ services:
       NODE_ENV: production
       MONGO_URI: mongodb://admin:password@database:27017/mydb?authSource=admin
       JWT_SECRET: abc123
+      REFRESH_TOKEN_SECRET: refresh-abc123
+      COOKIE_SECURE: "false"
 
     depends_on:
       - database

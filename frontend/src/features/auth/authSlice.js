@@ -47,6 +47,22 @@ export const logout = createAsyncThunk('auth/logout', async () => {
   await authService.logout()
 })
 
+export const refreshSession = createAsyncThunk(
+  'auth/refresh',
+  async (_, thunkAPI) => {
+    try {
+      return await authService.refresh()
+    } catch (error) {
+      localStorage.removeItem('user')
+      const message =
+        (error.response && error.response.data && error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -89,6 +105,12 @@ export const authSlice = createSlice({
         state.user = null
       })
       .addCase(logout.fulfilled, (state) => {
+        state.user = null
+      })
+      .addCase(refreshSession.fulfilled, (state, action) => {
+        state.user = action.payload
+      })
+      .addCase(refreshSession.rejected, (state) => {
         state.user = null
       })
   },
