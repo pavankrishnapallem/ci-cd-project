@@ -1,0 +1,9 @@
+{
+  "name": "goal-setter-integration-tests",
+  "private": true,
+  "scripts": {
+    "test": "node run-tests.js",
+    "wait": "node wait-for-stack.js",
+    "test:stack": "node wait-for-stack.js && node run-tests.js"
+  }
+}

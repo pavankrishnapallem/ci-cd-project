@@ -67,9 +67,30 @@ jobs:
         working-directory: ./backend
         run: docker build -t goal-reminder-backend:test .
 
-  push-images:
+  integration-test:
     runs-on: ubuntu-latest
     needs: [build-frontend, build-backend]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Start stack with Docker Compose
+        run: docker compose -f docker-compose.yml -f docker-compose.integration.yml up -d --build --wait
+      - name: Run integration tests
+        working-directory: ./integration
+        run: npm run test:stack
+        env:
+          INTEGRATION_BASE_URL: http://localhost:3000
+      - name: Stop stack
+        if: always()
+        run: docker compose -f docker-compose.yml -f docker-compose.integration.yml down -v
+
+  push-images:
+    runs-on: ubuntu-latest
+    needs: [integration-test]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
